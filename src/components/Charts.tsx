@@ -1,25 +1,18 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
+import { Check, X } from "lucide-react";
 
 const Charts = () => {
   const accountOpeningData = [
     { name: "Jan", type1: 100, type2: 120, type3: 80 },
     { name: "Feb", type1: 120, type2: 100, type3: 90 },
     { name: "Mar", type1: 140, type2: 80, type3: 100 },
-    // Add more data points as needed
   ];
 
   const districtData = [
     { name: "District A", value: 400 },
     { name: "District B", value: 300 },
     { name: "District C", value: 200 },
-    // Add more districts as needed
-  ];
-
-  const pieData = [
-    { name: "Success", value: 871363301 },
-    { name: "Failure", value: 1112 },
   ];
 
   const transactionData = [
@@ -30,7 +23,23 @@ const Charts = () => {
     { name: "RTGS", value: 200 },
   ];
 
+  const successData = [
+    { name: "Existing", value: 871363301 },
+    { name: "New", value: 1112 },
+  ];
+
+  const failureData = [
+    { name: "Existing", value: 300 },
+    { name: "New", value: 812 },
+  ];
+
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
+  const SUCCESS_COLORS = ["#F2FCE2", "#FFDEE2"];
+  const FAILURE_COLORS = ["#FFDEE2", "#F2FCE2"];
+
+  const formatLargeNumber = (num: number) => {
+    return num.toLocaleString();
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -73,22 +82,91 @@ const Charts = () => {
           <CardTitle>Success & Failure Analysis</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={pieData}
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={5}
-                dataKey="value"
-              >
-                {pieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
+          <div className="grid grid-cols-3 gap-4">
+            <Card className="col-span-1 border shadow-sm">
+              <CardContent className="p-6">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-center">
+                    <img 
+                      src="/lovable-uploads/1a7f4f2c-cc1d-4e62-a83c-ff94a4a95253.png" 
+                      alt="Total Attempt" 
+                      className="w-12 h-12"
+                    />
+                  </div>
+                  <div className="text-sm text-center text-muted-foreground">
+                    TOTAL ATTEMPT
+                  </div>
+                  <div className="text-2xl font-bold text-center">
+                    182,268
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="col-span-2 border shadow-sm">
+              <CardContent className="p-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <Check className="w-5 h-5 text-green-500" />
+                      </div>
+                      <span className="text-sm text-muted-foreground">SUCCESS</span>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {formatLargeNumber(871363301)}
+                    </div>
+                    <div className="w-full h-32">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={successData}
+                            innerRadius={25}
+                            outerRadius={40}
+                            paddingAngle={5}
+                            dataKey="value"
+                          >
+                            {successData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={SUCCESS_COLORS[index]} />
+                            ))}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                        <X className="w-5 h-5 text-red-500" />
+                      </div>
+                      <span className="text-sm text-muted-foreground">FAILURE</span>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {formatLargeNumber(1112)}
+                    </div>
+                    <div className="w-full h-32">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={failureData}
+                            innerRadius={25}
+                            outerRadius={40}
+                            paddingAngle={5}
+                            dataKey="value"
+                          >
+                            {failureData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={FAILURE_COLORS[index]} />
+                            ))}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </CardContent>
       </Card>
 
