@@ -1,6 +1,7 @@
 
 import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Star, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -8,11 +9,18 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Reports"]);
+
   const menuItems = [
-    { icon: FileText, label: "Reports", active: true },
-    { icon: Home, label: "Apollo" },
-    { icon: Smartphone, label: "Mobile Banking" },
-    { icon: CreditCard, label: "Card Banking" },
+    {
+      icon: FileText,
+      label: "Reports",
+      submenu: [
+        { icon: Home, label: "Apollo", active: true },
+        { icon: Smartphone, label: "Mobile Banking" },
+        { icon: CreditCard, label: "Card Banking" },
+      ],
+    },
     { icon: Table, label: "Tables" },
     { icon: MessageSquare, label: "Comments" },
     { icon: FolderOpen, label: "File Manager" },
@@ -22,6 +30,14 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   const bottomItems = [
     { icon: Settings, label: "Settings" },
   ];
+
+  const toggleExpanded = (label: string) => {
+    setExpandedItems(prev => 
+      prev.includes(label) 
+        ? prev.filter(item => item !== label)
+        : [...prev, label]
+    );
+  };
 
   return (
     <aside className={cn(
@@ -37,8 +53,8 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         </button>
         {isOpen && (
           <img
-            src="/lovable-uploads/110caa20-4a1d-4bc3-809e-cdb004f5cff6.png"
-            alt="Bank of Abyssinia"
+            src="/lovable-uploads/028fc144-93a6-47d3-962d-c7de734dfa5b.png"
+            alt="Bank Logo"
             className="h-8"
           />
         )}
@@ -48,16 +64,46 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         <ul className="space-y-2">
           {menuItems.map((item) => (
             <li key={item.label}>
-              <a
-                href="#"
-                className={cn(
-                  "flex items-center gap-4 p-2 rounded-lg transition-all hover:bg-gray-100",
-                  item.active && "text-primary bg-primary/10 hover:bg-primary/20"
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                {isOpen && <span>{item.label}</span>}
-              </a>
+              {item.submenu ? (
+                <div>
+                  <button
+                    onClick={() => toggleExpanded(item.label)}
+                    className={cn(
+                      "w-full flex items-center gap-4 p-2 rounded-lg transition-all hover:bg-gray-100",
+                      expandedItems.includes(item.label) && "text-primary bg-primary/10 hover:bg-primary/20"
+                    )}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    {isOpen && <span>{item.label}</span>}
+                  </button>
+                  {isOpen && expandedItems.includes(item.label) && (
+                    <ul className="ml-6 mt-2 space-y-2">
+                      {item.submenu.map((subItem) => (
+                        <li key={subItem.label}>
+                          <a
+                            href="#"
+                            className={cn(
+                              "flex items-center gap-4 p-2 rounded-lg transition-all hover:bg-gray-100",
+                              subItem.active && "text-primary bg-primary/10 hover:bg-primary/20"
+                            )}
+                          >
+                            <subItem.icon className="h-5 w-5" />
+                            <span>{subItem.label}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ) : (
+                <a
+                  href="#"
+                  className="flex items-center gap-4 p-2 rounded-lg transition-all hover:bg-gray-100"
+                >
+                  <item.icon className="h-5 w-5" />
+                  {isOpen && <span>{item.label}</span>}
+                </a>
+              )}
             </li>
           ))}
         </ul>
