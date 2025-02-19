@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 import { Check, X } from "lucide-react";
@@ -88,7 +89,7 @@ const Charts = () => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-center">
                     <img 
-                      src="/lovable-uploads/1a7f4f2c-cc1d-4e62-a83c-ff94a4a95253.png" 
+                      src="/lovable-uploads/46dc45ab-988e-4058-afaa-98d473dcbc97.png" 
                       alt="Total Attempt" 
                       className="w-12 h-12"
                     />
@@ -121,9 +122,7 @@ const Charts = () => {
                         <PieChart>
                           <Pie
                             data={successData}
-                            innerRadius={25}
                             outerRadius={40}
-                            paddingAngle={5}
                             dataKey="value"
                           >
                             {successData.map((entry, index) => (
@@ -150,9 +149,7 @@ const Charts = () => {
                         <PieChart>
                           <Pie
                             data={failureData}
-                            innerRadius={25}
                             outerRadius={40}
-                            paddingAngle={5}
                             dataKey="value"
                           >
                             {failureData.map((entry, index) => (
