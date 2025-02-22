@@ -7,7 +7,7 @@ import StatsCards from "@/components/StatsCards";
 import Charts from "@/components/Charts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 export type DashboardType = "apollo" | "mobile" | "card";
@@ -17,7 +17,7 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState<DashboardType>("apollo");
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
