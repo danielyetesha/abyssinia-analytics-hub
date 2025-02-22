@@ -1,20 +1,52 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from "recharts";
 import { Check, X } from "lucide-react";
+import type { DashboardType } from "@/pages/Index";
 
-const Charts = () => {
-  const accountOpeningData = [
-    { name: "Jan", type1: 100, type2: 120, type3: 80 },
-    { name: "Feb", type1: 120, type2: 100, type3: 90 },
-    { name: "Mar", type1: 140, type2: 80, type3: 100 },
-  ];
+interface ChartsProps {
+  type: DashboardType;
+}
 
-  const districtData = [
-    { name: "District A", value: 400 },
-    { name: "District B", value: 300 },
-    { name: "District C", value: 200 },
-  ];
+const Charts = ({ type }: ChartsProps) => {
+  const dataConfig = {
+    apollo: {
+      accountOpeningData: [
+        { name: "Jan", type1: 100, type2: 120, type3: 80 },
+        { name: "Feb", type1: 120, type2: 100, type3: 90 },
+        { name: "Mar", type1: 140, type2: 80, type3: 100 },
+      ],
+      districtData: [
+        { name: "District A", value: 400 },
+        { name: "District B", value: 300 },
+        { name: "District C", value: 200 },
+      ],
+    },
+    mobile: {
+      accountOpeningData: [
+        { name: "Jan", type1: 150, type2: 90, type3: 110 },
+        { name: "Feb", type1: 180, type2: 140, type3: 130 },
+        { name: "Mar", type1: 200, type2: 160, type3: 150 },
+      ],
+      districtData: [
+        { name: "Region X", value: 600 },
+        { name: "Region Y", value: 450 },
+        { name: "Region Z", value: 350 },
+      ],
+    },
+    card: {
+      accountOpeningData: [
+        { name: "Jan", type1: 80, type2: 140, type3: 60 },
+        { name: "Feb", type1: 100, type2: 160, type3: 80 },
+        { name: "Mar", type1: 120, type2: 180, type3: 100 },
+      ],
+      districtData: [
+        { name: "Zone 1", value: 500 },
+        { name: "Zone 2", value: 400 },
+        { name: "Zone 3", value: 300 },
+      ],
+    },
+  };
 
   const transactionData = [
     { name: "giro zip", value: 800 },
@@ -34,7 +66,6 @@ const Charts = () => {
     { name: "New", value: 812 },
   ];
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
   const SUCCESS_COLORS = ["#F2FCE2", "#FFDEE2"];
   const FAILURE_COLORS = ["#FFDEE2", "#F2FCE2"];
 
@@ -42,15 +73,21 @@ const Charts = () => {
     return num.toLocaleString();
   };
 
+  const currentData = dataConfig[type];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <Card className="animate-fade-in animation-delay-200">
         <CardHeader>
-          <CardTitle>Account Opening Activity</CardTitle>
+          <CardTitle>
+            {type === "apollo" && "Account Opening Activity"}
+            {type === "mobile" && "Mobile App Usage"}
+            {type === "card" && "Card Transaction Activity"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={accountOpeningData}>
+            <LineChart data={currentData.accountOpeningData}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -64,11 +101,15 @@ const Charts = () => {
 
       <Card className="animate-fade-in animation-delay-400">
         <CardHeader>
-          <CardTitle>District Performance</CardTitle>
+          <CardTitle>
+            {type === "apollo" && "District Performance"}
+            {type === "mobile" && "Regional Activity"}
+            {type === "card" && "Zone Analysis"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={districtData}>
+            <BarChart data={currentData.districtData}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -169,7 +210,11 @@ const Charts = () => {
 
       <Card className="animate-fade-in animation-delay-400">
         <CardHeader>
-          <CardTitle>Apollo Transactions by Type</CardTitle>
+          <CardTitle>
+            {type === "apollo" && "Apollo Transactions by Type"}
+            {type === "mobile" && "Mobile Transactions by Category"}
+            {type === "card" && "Card Usage by Merchant"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
