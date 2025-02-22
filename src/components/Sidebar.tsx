@@ -143,3 +143,4 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
 };
 
 export default Sidebar;
+

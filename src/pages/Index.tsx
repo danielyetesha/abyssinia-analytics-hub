@@ -7,15 +7,11 @@ import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import StatsCards from "@/components/StatsCards";
 import Charts from "@/components/Charts";
-import { TableReports } from "@/components/TableReports";
-import { Comments } from "@/components/Comments";
-import { FileManager } from "@/components/FileManager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export type DashboardType = "apollo" | "mobile" | "card";
 
@@ -38,7 +34,6 @@ const Index = () => {
     const content = contentRef.current;
     const canvas = await html2canvas(content, {
       ignoreElements: (element) => {
-        // Ignore navigation elements
         return element.classList.contains('fixed') || 
                element.classList.contains('sticky');
       }
@@ -121,7 +116,7 @@ const Index = () => {
       )}
 
       <main className={cn(
-        "flex-1 overflow-y-auto",
+        "flex-1 overflow-y-auto bg-background",
         isMobile && "pt-16"
       )}>
         <div className="p-8">
@@ -172,26 +167,6 @@ const Index = () => {
             <div className="mb-8">
               <Charts type={activeTab} />
             </div>
-            
-            <Tabs defaultValue="tables" className="w-full space-y-8">
-              <TabsList>
-                <TabsTrigger value="tables">Tables</TabsTrigger>
-                <TabsTrigger value="comments">Comments</TabsTrigger>
-                <TabsTrigger value="files">Files</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="tables">
-                <TableReports />
-              </TabsContent>
-              
-              <TabsContent value="comments">
-                <Comments />
-              </TabsContent>
-              
-              <TabsContent value="files">
-                <FileManager />
-              </TabsContent>
-            </Tabs>
           </div>
         </div>
       </main>
