@@ -9,9 +9,10 @@ interface SidebarProps {
   setIsOpen: (open: boolean) => void;
   activeTab: DashboardType;
   onTabChange: (tab: DashboardType) => void;
+  className?: string;
 }
 
-const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange }: SidebarProps) => {
+const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>(["Reports"]);
 
   const menuItems = [{
@@ -55,7 +56,8 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange }: SidebarProps) =>
   return (
     <aside className={cn(
       "h-screen bg-white border-r border-border transition-all duration-300 ease-in-out flex flex-col",
-      isOpen ? "w-64" : "w-20"
+      isOpen ? "w-64" : "w-20",
+      className
     )}>
       <div className="p-4 border-b border-border flex items-center gap-4">
         <button
