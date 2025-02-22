@@ -1,3 +1,4 @@
+
 import type { DashboardType } from "@/pages/Index";
 import { CardBankingCharts } from "./reports/CardReports";
 import { MobileBankingCharts } from "./reports/MobileReports";
@@ -87,9 +88,7 @@ const Charts = ({ type }: ChartsProps) => {
             <Card className="animate-fade-in animation-delay-200">
               <CardHeader>
                 <CardTitle>
-                  {type === "apollo" && "Account Opening Activity"}
-                  {type === "mobile" && "Mobile App Usage"}
-                  {type === "card" && "Card Transaction Activity"}
+                  Account Opening Activity
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -109,9 +108,7 @@ const Charts = ({ type }: ChartsProps) => {
             <Card className="animate-fade-in animation-delay-400">
               <CardHeader>
                 <CardTitle>
-                  {type === "apollo" && "District Performance"}
-                  {type === "mobile" && "Regional Activity"}
-                  {type === "card" && "Zone Analysis"}
+                  District Performance
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -217,11 +214,7 @@ const Charts = ({ type }: ChartsProps) => {
 
             <Card className="animate-fade-in animation-delay-400">
               <CardHeader>
-                <CardTitle>
-                  {type === "apollo" && "Apollo Transactions by Type"}
-                  {type === "mobile" && "Mobile Transactions by Category"}
-                  {type === "card" && "Card Usage by Merchant"}
-                </CardTitle>
+                <CardTitle>Apollo Transactions by Type</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
