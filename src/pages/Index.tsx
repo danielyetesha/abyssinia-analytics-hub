@@ -1,14 +1,21 @@
 
-import { useState } from "react";
-import { Download, Search, Menu, X } from "lucide-react";
+import { useState, useRef } from "react";
+import { Download, Search, Menu, X, Sun, Moon } from "lucide-react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import StatsCards from "@/components/StatsCards";
 import Charts from "@/components/Charts";
+import { TableReports } from "@/components/TableReports";
+import { Comments } from "@/components/Comments";
+import { FileManager } from "@/components/FileManager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export type DashboardType = "apollo" | "mobile" | "card";
 
@@ -17,41 +24,79 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState<DashboardType>("apollo");
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const { theme, setTheme } = useTheme();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleDownloadPDF = async () => {
+    if (!contentRef.current) return;
+
+    const content = contentRef.current;
+    const canvas = await html2canvas(content, {
+      ignoreElements: (element) => {
+        // Ignore navigation elements
+        return element.classList.contains('fixed') || 
+               element.classList.contains('sticky');
+      }
+    });
+    
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
+    });
+    
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('report.pdf');
   };
 
   return (
     <div className="h-screen bg-background flex overflow-hidden">
       {/* Mobile Navigation */}
       {isMobile && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-border">
+        <div className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
           <div className="flex items-center justify-between p-4">
             <img
               src="/lovable-uploads/028fc144-93a6-47d3-962d-c7de734dfa5b.png"
               alt="Bank Logo"
               className="h-8"
             />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Mobile Menu Overlay */}
       {isMobile && mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-white">
+        <div className="fixed inset-0 z-40 bg-background">
           <Sidebar 
             isOpen={true}
             setIsOpen={() => setMobileMenuOpen(false)}
@@ -96,15 +141,58 @@ const Index = () => {
                   className="pl-9 w-[200px]"
                 />
               </div>
-              <Button variant="outline" size="sm" className="gap-2">
+              {!isMobile && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                >
+                  {theme === "dark" ? (
+                    <Sun className="h-5 w-5" />
+                  ) : (
+                    <Moon className="h-5 w-5" />
+                  )}
+                </Button>
+              )}
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-2"
+                onClick={handleDownloadPDF}
+              >
                 <Download className="h-4 w-4" />
-                Download
+                Download PDF
               </Button>
             </div>
           </div>
-          <TopBar />
-          <StatsCards type={activeTab} />
-          <Charts type={activeTab} />
+
+          <div ref={contentRef}>
+            <TopBar />
+            <StatsCards type={activeTab} />
+            <div className="mb-8">
+              <Charts type={activeTab} />
+            </div>
+            
+            <Tabs defaultValue="tables" className="w-full space-y-8">
+              <TabsList>
+                <TabsTrigger value="tables">Tables</TabsTrigger>
+                <TabsTrigger value="comments">Comments</TabsTrigger>
+                <TabsTrigger value="files">Files</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="tables">
+                <TableReports />
+              </TabsContent>
+              
+              <TabsContent value="comments">
+                <Comments />
+              </TabsContent>
+              
+              <TabsContent value="files">
+                <FileManager />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
       </main>
     </div>
