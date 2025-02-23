@@ -38,7 +38,7 @@ const App = () => {
                 <Sonner />
                 <main className="h-full">
                   <Routes>
-                    <Route path="/" element={<Index />} />
+                    <Route path="/" element={<Index activeTab={activeTab} />} />
                     <Route path="/tables" element={<Tables />} />
                     <Route path="/comments" element={<Comments />} />
                     <Route path="/file-manager" element={<FileManager />} />
