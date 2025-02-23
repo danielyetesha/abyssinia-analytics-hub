@@ -2,6 +2,7 @@
 import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Star, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import type { DashboardType } from "@/pages/Index";
 
 interface SidebarProps {
@@ -14,6 +15,7 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>(["Reports"]);
+  const location = useLocation();
 
   const menuItems = [{
     icon: FileText,
@@ -33,16 +35,20 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
     }]
   }, {
     icon: Table,
-    label: "Tables"
+    label: "Tables",
+    path: "/tables"
   }, {
     icon: MessageSquare,
-    label: "Comments"
+    label: "Comments",
+    path: "/comments"
   }, {
     icon: FolderOpen,
-    label: "File Manager"
+    label: "File Manager",
+    path: "/file-manager"
   }, {
     icon: Star,
-    label: "Favorites"
+    label: "Favorites",
+    path: "/favorites"
   }];
 
   const toggleExpanded = (label: string) => {
@@ -111,13 +117,16 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
                   )}
                 </div>
               ) : (
-                <a
-                  href="#"
-                  className="flex items-center gap-4 p-2 rounded-lg transition-all hover:bg-gray-100"
+                <Link
+                  to={item.path || "#"}
+                  className={cn(
+                    "flex items-center gap-4 p-2 rounded-lg transition-all hover:bg-gray-100",
+                    location.pathname === item.path && "text-primary bg-primary/10 hover:bg-primary/20"
+                  )}
                 >
                   <item.icon className="h-5 w-5" />
                   {isOpen && <span>{item.label}</span>}
-                </a>
+                </Link>
               )}
             </li>
           ))}
@@ -143,4 +152,3 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
 };
 
 export default Sidebar;
-
