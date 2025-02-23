@@ -2,8 +2,13 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { DashboardType } from "../App";
 
-const Tables = () => {
+interface TablesProps {
+  activeTab: DashboardType;
+}
+
+const Tables = ({ activeTab }: TablesProps) => {
   const transactionsData = [
     { id: 1, date: "2024-02-20", type: "Payment", amount: 500, status: "Completed" },
     { id: 2, date: "2024-02-19", type: "Transfer", amount: 1000, status: "Pending" },
@@ -18,7 +23,16 @@ const Tables = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-semibold mb-8">Report Tables</h1>
+      <div className="mb-8">
+        <Tabs value={activeTab} className="w-full">
+          <TabsList>
+            <TabsTrigger value="apollo">Apollo</TabsTrigger>
+            <TabsTrigger value="mobile">Mobile Banking</TabsTrigger>
+            <TabsTrigger value="card">Card Banking</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+
       <Card>
         <CardHeader>
           <CardTitle>Reports Tables</CardTitle>
@@ -32,7 +46,7 @@ const Tables = () => {
             <TabsContent value="transactions">
               <div className="rounded-md border">
                 <table className="w-full">
-                  <thead className="bg-muted/50">
+                  <thead className="bg-muted/50 dark:bg-muted/20">
                     <tr>
                       <th className="py-3 px-4 text-left">ID</th>
                       <th className="py-3 px-4 text-left">Date</th>
@@ -43,7 +57,7 @@ const Tables = () => {
                   </thead>
                   <tbody>
                     {transactionsData.map((transaction) => (
-                      <tr key={transaction.id} className="border-t">
+                      <tr key={transaction.id} className="border-t border-border">
                         <td className="py-3 px-4">{transaction.id}</td>
                         <td className="py-3 px-4">{transaction.date}</td>
                         <td className="py-3 px-4">{transaction.type}</td>
@@ -58,7 +72,7 @@ const Tables = () => {
             <TabsContent value="users">
               <div className="rounded-md border">
                 <table className="w-full">
-                  <thead className="bg-muted/50">
+                  <thead className="bg-muted/50 dark:bg-muted/20">
                     <tr>
                       <th className="py-3 px-4 text-left">ID</th>
                       <th className="py-3 px-4 text-left">Name</th>
@@ -68,7 +82,7 @@ const Tables = () => {
                   </thead>
                   <tbody>
                     {usersData.map((user) => (
-                      <tr key={user.id} className="border-t">
+                      <tr key={user.id} className="border-t border-border">
                         <td className="py-3 px-4">{user.id}</td>
                         <td className="py-3 px-4">{user.name}</td>
                         <td className="py-3 px-4">{user.activity}</td>
