@@ -9,50 +9,34 @@ import Index from "./pages/Index";
 import Tables from "./pages/Tables";
 import Comments from "./pages/Comments";
 import FileManager from "./pages/FileManager";
-import Favorites from "./pages/Favorites";
 import NotFound from "./pages/NotFound";
 import Sidebar from "./components/Sidebar";
-import { useState } from "react";
-import type { DashboardType } from "./types/dashboard";
 
 const queryClient = new QueryClient();
 
-const App = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState<DashboardType>("apollo");
-
-  return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <TooltipProvider>
-            <div className="flex min-h-screen bg-background dark:bg-zinc-900">
-              <Sidebar 
-                isOpen={isOpen} 
-                setIsOpen={setIsOpen} 
-                activeTab={activeTab} 
-                onTabChange={setActiveTab}
-              />
-              <div className="flex-1 overflow-auto">
-                <Toaster />
-                <Sonner />
-                <main className="h-full">
-                  <Routes>
-                    <Route path="/" element={<Index activeTab={activeTab} />} />
-                    <Route path="/tables" element={<Tables />} />
-                    <Route path="/comments" element={<Comments />} />
-                    <Route path="/file-manager" element={<FileManager />} />
-                    <Route path="/favorites" element={<Favorites />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-              </div>
+const App = () => (
+  <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <TooltipProvider>
+          <div className="flex h-screen bg-background">
+            <Sidebar isOpen={true} setIsOpen={() => {}} activeTab="apollo" onTabChange={() => {}} />
+            <div className="flex-1 overflow-auto">
+              <Toaster />
+              <Sonner />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/tables" element={<Tables />} />
+                <Route path="/comments" element={<Comments />} />
+                <Route path="/file-manager" element={<FileManager />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </div>
-          </TooltipProvider>
-        </BrowserRouter>
-      </QueryClientProvider>
-    </ThemeProvider>
-  );
-};
+          </div>
+        </TooltipProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  </ThemeProvider>
+);
 
 export default App;
