@@ -1,5 +1,5 @@
 
-import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Settings, LogOut } from "lucide-react";
+import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Star, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -45,6 +45,10 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
     icon: FolderOpen,
     label: "File Manager",
     path: "/file-manager"
+  }, {
+    icon: Star,
+    label: "Favorites",
+    path: "/favorites"
   }];
 
   const toggleExpanded = (label: string) => {
@@ -57,15 +61,14 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
 
   return (
     <aside className={cn(
-      "h-screen border-r border-border transition-all duration-300 ease-in-out flex flex-col",
-      "bg-background dark:bg-zinc-900",
+      "h-screen bg-white border-r border-border transition-all duration-300 ease-in-out flex flex-col",
       isOpen ? "w-64" : "w-20",
       className
     )}>
-      <div className="p-4 border-b border-border flex items-center gap-4 bg-background/95 dark:bg-zinc-900/95">
+      <div className="p-4 border-b border-border flex items-center gap-4">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-2 hover:bg-muted rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -87,9 +90,8 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
                   <button
                     onClick={() => toggleExpanded(item.label)}
                     className={cn(
-                      "w-full flex items-center gap-4 p-2 rounded-lg transition-all",
-                      "hover:bg-muted dark:hover:bg-zinc-800",
-                      expandedItems.includes(item.label) && "text-primary bg-primary/10 dark:bg-primary/5"
+                      "w-full flex items-center gap-4 p-2 rounded-lg transition-all hover:bg-gray-100",
+                      expandedItems.includes(item.label) && "text-primary bg-primary/10 hover:bg-primary/20"
                     )}
                   >
                     <item.icon className="h-5 w-5" />
@@ -102,9 +104,8 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
                           <button
                             onClick={() => onTabChange(subItem.id)}
                             className={cn(
-                              "flex items-center gap-4 p-2 rounded-lg transition-all w-full",
-                              "hover:bg-muted dark:hover:bg-zinc-800",
-                              activeTab === subItem.id && "text-primary bg-primary/10 dark:bg-primary/5"
+                              "flex items-center gap-4 p-2 rounded-lg transition-all hover:bg-gray-100 w-full",
+                              activeTab === subItem.id && "text-primary bg-primary/10 hover:bg-primary/20"
                             )}
                           >
                             <subItem.icon className="h-5 w-5" />
@@ -119,9 +120,8 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
                 <Link
                   to={item.path || "#"}
                   className={cn(
-                    "flex items-center gap-4 p-2 rounded-lg transition-all",
-                    "hover:bg-muted dark:hover:bg-zinc-800",
-                    location.pathname === item.path && "text-primary bg-primary/10 dark:bg-primary/5"
+                    "flex items-center gap-4 p-2 rounded-lg transition-all hover:bg-gray-100",
+                    location.pathname === item.path && "text-primary bg-primary/10 hover:bg-primary/20"
                   )}
                 >
                   <item.icon className="h-5 w-5" />
@@ -133,9 +133,9 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
         </ul>
       </nav>
 
-      <div className="p-4 border-t border-border bg-background/95 dark:bg-zinc-900/95">
+      <div className="p-4 border-t border-border">
         <div className="flex items-center gap-4 p-2">
-          <div className="h-8 w-8 rounded-full bg-muted dark:bg-zinc-800" />
+          <div className="h-8 w-8 rounded-full bg-gray-200" />
           {isOpen && (
             <div className="flex-1">
               <p className="text-sm font-medium">Your Name</p>
