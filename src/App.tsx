@@ -13,7 +13,7 @@ import Favorites from "./pages/Favorites";
 import NotFound from "./pages/NotFound";
 import Sidebar from "./components/Sidebar";
 import { useState } from "react";
-import type { DashboardType } from "./pages/Index";
+import type { DashboardType } from "./types/dashboard";
 
 const queryClient = new QueryClient();
 

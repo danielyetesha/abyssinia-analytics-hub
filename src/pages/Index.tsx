@@ -1,5 +1,5 @@
 
-import { DashboardType } from "@/pages/Index";
+import type { DashboardType } from "@/types/dashboard";
 import Charts from "@/components/Charts";
 import StatsCards from "@/components/StatsCards";
 import TopBar from "@/components/TopBar";
@@ -12,8 +12,8 @@ const Index = ({ activeTab }: IndexProps) => {
   return (
     <div className="flex flex-col gap-4 p-4 md:p-6">
       <TopBar />
-      <StatsCards />
-      <Charts />
+      <StatsCards type={activeTab} />
+      <Charts type={activeTab} />
     </div>
   );
 };
