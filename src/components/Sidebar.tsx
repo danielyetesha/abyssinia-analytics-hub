@@ -1,9 +1,8 @@
-
 import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import type { DashboardType } from "@/pages/Index";
+import type { DashboardType } from "@/types/dashboard";
 
 interface SidebarProps {
   isOpen: boolean;
