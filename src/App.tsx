@@ -18,6 +18,10 @@ export type SectionType = "reports" | "tables" | "comments" | "file-manager";
 
 const queryClient = new QueryClient();
 
+interface TabsProps {
+  activeTab: DashboardType;
+}
+
 const App = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<DashboardType>("apollo");
@@ -34,17 +38,15 @@ const App = () => {
                 setIsOpen={setIsOpen} 
                 activeTab={activeTab} 
                 onTabChange={setActiveTab}
-                activeSection={activeSection}
-                onSectionChange={setActiveSection}
               />
               <div className="flex-1 overflow-auto">
                 <Toaster />
                 <Sonner />
                 <Routes>
                   <Route path="/" element={<Index />} />
-                  <Route path="/tables" element={<Tables activeTab={activeTab} />} />
-                  <Route path="/comments" element={<Comments activeTab={activeTab} />} />
-                  <Route path="/file-manager" element={<FileManager activeTab={activeTab} />} />
+                  <Route path="/tables" element={<Tables />} />
+                  <Route path="/comments" element={<Comments />} />
+                  <Route path="/file-manager" element={<FileManager />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
