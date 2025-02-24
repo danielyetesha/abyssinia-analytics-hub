@@ -12,16 +12,13 @@ import FileManager from "./pages/FileManager";
 import NotFound from "./pages/NotFound";
 import Sidebar from "./components/Sidebar";
 import { useState } from "react";
-
-export type DashboardType = "apollo" | "mobile" | "card";
-export type SectionType = "reports" | "tables" | "comments" | "file-manager";
+import type { DashboardType } from "./types/dashboard";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<DashboardType>("apollo");
-  const [activeSection, setActiveSection] = useState<SectionType>("reports");
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -34,8 +31,6 @@ const App = () => {
                 setIsOpen={setIsOpen} 
                 activeTab={activeTab} 
                 onTabChange={setActiveTab}
-                activeSection={activeSection}
-                onSectionChange={setActiveSection}
               />
               <div className="flex-1 overflow-auto">
                 <Toaster />
@@ -43,8 +38,8 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/tables" element={<Tables activeTab={activeTab} />} />
-                  <Route path="/comments" element={<Comments activeTab={activeTab} />} />
-                  <Route path="/file-manager" element={<FileManager activeTab={activeTab} />} />
+                  <Route path="/comments" element={<Comments />} />
+                  <Route path="/file-manager" element={<FileManager />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
