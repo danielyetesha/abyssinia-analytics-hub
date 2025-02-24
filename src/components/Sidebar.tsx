@@ -1,9 +1,9 @@
 
-import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen } from "lucide-react";
+import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import type { DashboardType } from "@/App";
+import { Link, useLocation } from "react-router-dom";
+import type { DashboardType } from "@/pages/Index";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -16,7 +16,6 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>(["Reports"]);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const menuItems = [{
     icon: FileText,
@@ -54,11 +53,6 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
         ? prev.filter(item => item !== label)
         : [...prev, label]
     );
-  };
-
-  const handleReportClick = (reportType: DashboardType) => {
-    onTabChange(reportType);
-    navigate("/");
   };
 
   return (
@@ -106,7 +100,7 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
                       {item.submenu.map((subItem) => (
                         <li key={subItem.label}>
                           <button
-                            onClick={() => handleReportClick(subItem.id)}
+                            onClick={() => onTabChange(subItem.id)}
                             className={cn(
                               "flex items-center gap-4 p-2 rounded-lg transition-all w-full",
                               "hover:bg-muted dark:hover:bg-zinc-800",
@@ -145,9 +139,10 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
           {isOpen && (
             <div className="flex-1">
               <p className="text-sm font-medium">Your Name</p>
-              <div className="text-sm text-muted-foreground">
-                user@example.com
-              </div>
+              <button className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-2">
+                <LogOut className="h-4 w-4" />
+                Logout
+              </button>
             </div>
           )}
         </div>
