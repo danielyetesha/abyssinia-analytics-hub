@@ -1,6 +1,7 @@
+
 import { LineChart, Line } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { DashboardType } from "@/types/dashboard";
+import type { DashboardType } from "@/pages/Index";
 
 interface StatsCardsProps {
   type: DashboardType;

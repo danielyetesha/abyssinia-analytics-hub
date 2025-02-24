@@ -1,4 +1,5 @@
-import type { DashboardType } from "@/types/dashboard";
+
+import type { DashboardType } from "@/pages/Index";
 import { CardBankingCharts } from "./reports/CardReports";
 import { MobileBankingCharts } from "./reports/MobileReports";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
