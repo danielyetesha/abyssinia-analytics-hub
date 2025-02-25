@@ -7,9 +7,15 @@ import { Check, X } from "lucide-react";
 
 interface ChartsProps {
   type: DashboardType;
+  data: any;
+  onChartClick: (type: string, value: string) => void;
 }
 
-const Charts = ({ type }: ChartsProps) => {
+const Charts = ({ type, data, onChartClick }: ChartsProps) => {
+  const handleChartClick = (type: string, value: string) => {
+    onChartClick(type, value);
+  };
+
   const dataConfig = {
     apollo: {
       accountOpeningData: [

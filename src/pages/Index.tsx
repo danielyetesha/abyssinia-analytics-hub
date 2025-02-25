@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { DateRangeFilter } from "@/components/DateRangeFilter";
+import { useFilteredData } from "@/hooks/useFilteredData";
 import type { DashboardType } from "../App";
 
 interface IndexProps {
@@ -24,6 +26,7 @@ const Index = ({ defaultTab }: IndexProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const { data, filters, setFilters, resetFilters } = useFilteredData(activeTab);
 
   useEffect(() => {
     setActiveTab(defaultTab);
@@ -31,11 +34,20 @@ const Index = ({ defaultTab }: IndexProps) => {
 
   const handleTabChange = (tab: DashboardType) => {
     setActiveTab(tab);
+    resetFilters();
     navigate(`/reports/${tab}`);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleDateChange = (startDate: Date | null, endDate: Date | null) => {
+    setFilters(prev => ({
+      ...prev,
+      startDate,
+      endDate
+    }));
   };
 
   const handleDownloadPDF = async () => {
@@ -72,7 +84,8 @@ const Index = ({ defaultTab }: IndexProps) => {
             {activeTab === "mobile" && "Mobile Banking Reports"}
             {activeTab === "card" && "Card Banking Reports"}
           </h1>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+            <DateRangeFilter onDateChange={handleDateChange} />
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -98,7 +111,17 @@ const Index = ({ defaultTab }: IndexProps) => {
           <TopBar />
           <StatsCards type={activeTab} />
           <div className="mb-8">
-            <Charts type={activeTab} />
+            <Charts 
+              type={activeTab} 
+              data={data}
+              onChartClick={(type, value) => {
+                setFilters(prev => ({
+                  ...prev,
+                  selectedType: type,
+                  selectedValue: value
+                }));
+              }}
+            />
           </div>
         </div>
       </div>
