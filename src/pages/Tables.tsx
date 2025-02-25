@@ -4,11 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { DashboardType } from "../App";
 
-interface TablesProps {
-  activeTab: DashboardType;
-}
-
-const Tables = ({ activeTab }: TablesProps) => {
+const Tables = () => {
+  const [activeTab, setActiveTab] = useState<DashboardType>("apollo");
+  
   const transactionsData = [
     { id: 1, date: "2024-02-20", type: "Payment", amount: 500, status: "Completed" },
     { id: 2, date: "2024-02-19", type: "Transfer", amount: 1000, status: "Pending" },
@@ -24,7 +22,7 @@ const Tables = ({ activeTab }: TablesProps) => {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <Tabs value={activeTab} className="w-full">
+        <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as DashboardType)} className="w-full">
           <TabsList>
             <TabsTrigger value="apollo">Apollo</TabsTrigger>
             <TabsTrigger value="mobile">Mobile Banking</TabsTrigger>
