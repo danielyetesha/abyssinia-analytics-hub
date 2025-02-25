@@ -15,6 +15,7 @@ import Sidebar from "./components/Sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, X } from "lucide-react";
 import { Button } from "./components/ui/button";
+import { cn } from "@/lib/utils";
 
 export type DashboardType = "apollo" | "mobile" | "card";
 export type SectionType = "reports" | "tables" | "comments" | "file-manager";
