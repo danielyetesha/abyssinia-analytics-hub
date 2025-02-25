@@ -1,6 +1,6 @@
 
 import { useState, useRef } from "react";
-import { Download, Search, Menu, X, Sun, Moon } from "lucide-react";
+import { Download, Search, Menu, X } from "lucide-react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Sidebar from "@/components/Sidebar";
@@ -65,17 +65,6 @@ const Index = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              >
-                {theme === "dark" ? (
-                  <Sun className="h-5 w-5" />
-                ) : (
-                  <Moon className="h-5 w-5" />
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? (
@@ -136,19 +125,6 @@ const Index = () => {
                   className="pl-9 w-[200px]"
                 />
               </div>
-              {!isMobile && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                >
-                  {theme === "dark" ? (
-                    <Sun className="h-5 w-5" />
-                  ) : (
-                    <Moon className="h-5 w-5" />
-                  )}
-                </Button>
-              )}
               <Button 
                 variant="outline" 
                 size="sm" 

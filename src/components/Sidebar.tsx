@@ -1,9 +1,11 @@
 
-import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Settings, LogOut } from "lucide-react";
+import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Settings, LogOut, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import type { DashboardType } from "@/pages/Index";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -16,6 +18,7 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>(["Reports"]);
   const location = useLocation();
+  const { theme, setTheme } = useTheme();
 
   const menuItems = [{
     icon: FileText,
@@ -130,6 +133,31 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
               )}
             </li>
           ))}
+          
+          {/* Theme Toggle Button */}
+          <li>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                "w-full flex items-center gap-4 justify-start",
+                "hover:bg-muted dark:hover:bg-zinc-800"
+              )}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? (
+                <>
+                  <Sun className="h-5 w-5" />
+                  {isOpen && <span>Light Mode</span>}
+                </>
+              ) : (
+                <>
+                  <Moon className="h-5 w-5" />
+                  {isOpen && <span>Dark Mode</span>}
+                </>
+              )}
+            </Button>
+          </li>
         </ul>
       </nav>
 
