@@ -1,10 +1,11 @@
 
-import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Settings, LogOut, Sun, Moon } from "lucide-react";
+import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, LogOut, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -15,8 +16,8 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, setIsOpen, className }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>(["Reports"]);
   const location = useLocation();
-  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
+  const isMobile = useIsMobile();
 
   const menuItems = [{
     icon: FileText,
@@ -67,21 +68,23 @@ const Sidebar = ({ isOpen, setIsOpen, className }: SidebarProps) => {
       isOpen ? "w-64" : "w-20",
       className
     )}>
-      <div className="p-4 border-b border-border flex items-center gap-4 bg-background/95 dark:bg-zinc-900/95">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="p-2 hover:bg-muted rounded-lg transition-colors"
-        >
-          <Menu className="h-5 w-5" />
-        </button>
-        {isOpen && (
-          <img
-            src="/lovable-uploads/028fc144-93a6-47d3-962d-c7de734dfa5b.png"
-            alt="Bank Logo"
-            className="h-8"
-          />
-        )}
-      </div>
+      {!isMobile && (
+        <div className="p-4 border-b border-border flex items-center gap-4 bg-background/95 dark:bg-zinc-900/95">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 hover:bg-muted rounded-lg transition-colors"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+          {isOpen && (
+            <img
+              src="/lovable-uploads/028fc144-93a6-47d3-962d-c7de734dfa5b.png"
+              alt="Bank Logo"
+              className="h-8"
+            />
+          )}
+        </div>
+      )}
 
       <nav className="flex-1 overflow-y-auto p-4">
         <ul className="space-y-2">
@@ -111,6 +114,7 @@ const Sidebar = ({ isOpen, setIsOpen, className }: SidebarProps) => {
                               "hover:bg-muted dark:hover:bg-zinc-800",
                               isActivePath(subItem.path) && "text-primary bg-primary/10 dark:bg-primary/5"
                             )}
+                            onClick={() => isMobile && setIsOpen(false)}
                           >
                             <subItem.icon className="h-5 w-5" />
                             <span>{subItem.label}</span>
@@ -128,6 +132,7 @@ const Sidebar = ({ isOpen, setIsOpen, className }: SidebarProps) => {
                     "hover:bg-muted dark:hover:bg-zinc-800",
                     isActivePath(item.path) && "text-primary bg-primary/10 dark:bg-primary/5"
                   )}
+                  onClick={() => isMobile && setIsOpen(false)}
                 >
                   <item.icon className="h-5 w-5" />
                   {isOpen && <span>{item.label}</span>}
@@ -135,35 +140,34 @@ const Sidebar = ({ isOpen, setIsOpen, className }: SidebarProps) => {
               )}
             </li>
           ))}
-          
-          {/* Theme Toggle Button */}
-          <li>
-            <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "w-full flex items-center gap-4 justify-start",
-                "hover:bg-muted dark:hover:bg-zinc-800"
-              )}
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            >
-              {theme === "dark" ? (
-                <>
-                  <Sun className="h-5 w-5" />
-                  {isOpen && <span>Light Mode</span>}
-                </>
-              ) : (
-                <>
-                  <Moon className="h-5 w-5" />
-                  {isOpen && <span>Dark Mode</span>}
-                </>
-              )}
-            </Button>
-          </li>
         </ul>
       </nav>
 
+      {/* Theme Toggle Button - Separated from navigation */}
       <div className="p-4 border-t border-border bg-background/95 dark:bg-zinc-900/95">
+        <Button
+          variant="ghost"
+          size="sm"
+          className={cn(
+            "w-full flex items-center gap-4 justify-start mb-4",
+            "hover:bg-muted dark:hover:bg-zinc-800"
+          )}
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
+          {theme === "dark" ? (
+            <>
+              <Sun className="h-5 w-5" />
+              {isOpen && <span>Light Mode</span>}
+            </>
+          ) : (
+            <>
+              <Moon className="h-5 w-5" />
+              {isOpen && <span>Dark Mode</span>}
+            </>
+          )}
+        </Button>
+
+        {/* Profile Section */}
         <div className="flex items-center gap-4 p-2">
           <div className="h-8 w-8 rounded-full bg-muted dark:bg-zinc-800" />
           {isOpen && (
