@@ -2,22 +2,20 @@
 import { Menu, Home, FileText, Smartphone, CreditCard, Table, MessageSquare, FolderOpen, Settings, LogOut, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import type { DashboardType } from "@/pages/Index";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  activeTab: DashboardType;
-  onTabChange: (tab: DashboardType) => void;
   className?: string;
 }
 
-const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: SidebarProps) => {
+const Sidebar = ({ isOpen, setIsOpen, className }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>(["Reports"]);
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
 
   const menuItems = [{
@@ -26,15 +24,15 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
     submenu: [{
       icon: Home,
       label: "Apollo",
-      id: "apollo" as DashboardType
+      path: "/reports/apollo"
     }, {
       icon: Smartphone,
       label: "Mobile Banking",
-      id: "mobile" as DashboardType
+      path: "/reports/mobile"
     }, {
       icon: CreditCard,
       label: "Card Banking",
-      id: "card" as DashboardType
+      path: "/reports/card"
     }]
   }, {
     icon: Table,
@@ -56,6 +54,10 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
         ? prev.filter(item => item !== label)
         : [...prev, label]
     );
+  };
+
+  const isActivePath = (path: string) => {
+    return location.pathname === path;
   };
 
   return (
@@ -102,17 +104,17 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
                     <ul className="ml-6 mt-2 space-y-2">
                       {item.submenu.map((subItem) => (
                         <li key={subItem.label}>
-                          <button
-                            onClick={() => onTabChange(subItem.id)}
+                          <Link
+                            to={subItem.path}
                             className={cn(
                               "flex items-center gap-4 p-2 rounded-lg transition-all w-full",
                               "hover:bg-muted dark:hover:bg-zinc-800",
-                              activeTab === subItem.id && "text-primary bg-primary/10 dark:bg-primary/5"
+                              isActivePath(subItem.path) && "text-primary bg-primary/10 dark:bg-primary/5"
                             )}
                           >
                             <subItem.icon className="h-5 w-5" />
                             <span>{subItem.label}</span>
-                          </button>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -120,11 +122,11 @@ const Sidebar = ({ isOpen, setIsOpen, activeTab, onTabChange, className }: Sideb
                 </div>
               ) : (
                 <Link
-                  to={item.path || "#"}
+                  to={item.path}
                   className={cn(
                     "flex items-center gap-4 p-2 rounded-lg transition-all",
                     "hover:bg-muted dark:hover:bg-zinc-800",
-                    location.pathname === item.path && "text-primary bg-primary/10 dark:bg-primary/5"
+                    isActivePath(item.path) && "text-primary bg-primary/10 dark:bg-primary/5"
                   )}
                 >
                   <item.icon className="h-5 w-5" />
