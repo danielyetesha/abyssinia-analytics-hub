@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { DateRangeFilter } from "@/components/DateRangeFilter";
 import { useFilteredData } from "@/hooks/useFilteredData";
+import { ApolloTabs } from "@/components/ApolloTabs";
 import type { DashboardType } from "../App";
 
 interface IndexProps {
@@ -23,6 +24,7 @@ interface IndexProps {
 const Index = ({ defaultTab }: IndexProps) => {
   const [activeTab, setActiveTab] = useState<DashboardType>(defaultTab);
   const [searchQuery, setSearchQuery] = useState("");
+  const [apolloSubTab, setApolloSubTab] = useState<"account" | "onboarding" | "loan" | "transaction" | "merchant">("account");
   const contentRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -107,12 +109,21 @@ const Index = ({ defaultTab }: IndexProps) => {
           </div>
         </div>
 
+        {/* Show Apollo sub-navigation only when on Apollo reports */}
+        {activeTab === "apollo" && (
+          <ApolloTabs
+            activeTab={apolloSubTab}
+            onChange={setApolloSubTab}
+          />
+        )}
+
         <div ref={contentRef}>
           <TopBar />
           <StatsCards type={activeTab} />
           <div className="mb-8">
             <Charts 
               type={activeTab} 
+              subType={apolloSubTab}
               data={data}
               onChartClick={(type, value) => {
                 setFilters(prev => ({

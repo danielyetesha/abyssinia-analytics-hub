@@ -7,11 +7,12 @@ import { Check, X } from "lucide-react";
 
 interface ChartsProps {
   type: DashboardType;
+  subType?: "account" | "onboarding" | "loan" | "transaction" | "merchant";
   data: any;
   onChartClick: (type: string, value: string) => void;
 }
 
-const Charts = ({ type, data, onChartClick }: ChartsProps) => {
+const Charts = ({ type, subType = "account", data, onChartClick }: ChartsProps) => {
   const handleChartClick = (type: string, value: string) => {
     onChartClick(type, value);
   };
